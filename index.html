@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Lab 5: Pixabay Search</title>
+       
+       
+        <link rel="stylesheet" href="css/styles.css" type="text/css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src = "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js" ></script>
+        <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+   
+    </head>
+    <body>
+        <h1 class="jumbotron"> Pixabay Image Search </h1>
+       
+<hr>
+
+        Keyword: <input type="text" id="keyword"><br>
+        Orientation: <select id="orientation">
+            <option>Select</option>
+            <option value="horizontal">Horizontal</option>
+            <option value="vertical">Vertical</option>
+           
+        </select>
+       
+        <button id="searchBtn">Search
+        <i class='fas fa-camera'></i></button>
+<hr>
+        <div id="images"></div>
+<hr>
+<!--
+<marquee behavior="scroll" direction="left">  
+<i class='fas fa-camera' style='font-size:14px;color:red'></i>
+<i class='fas fa-camera' style='font-size:14px;color:red'></i>
+       
+<i class='fas fa-camera' style='font-size:24px;color:orange'></i>
+<i class='fas fa-camera' style='font-size:24px;color:orange'></i>
+
+<i class='fas fa-camera' style='font-size:36px;color:yellow'></i>
+<i class='fas fa-camera' style='font-size:36px;color:yellow'></i>
+
+<i class='fas fa-camera' style='font-size:48px;color:black'></i>
+
+
+<i class='fas fa-camera' style='font-size:36px;color:green'></i>
+<i class='fas fa-camera' style='font-size:36px;color:green'></i>
+
+<i class='fas fa-camera' style='font-size:24px;color:blue'></i>
+<i class='fas fa-camera' style='font-size:24px;color:blue'></i>
+
+
+<i class='fas fa-camera' style='font-size:14px;color:purple'></i>
+<i class='fas fa-camera' style='font-size:14px;color:purple'></i>
+</marquee>  
+-->
+<br>
+     
+               
+        <script>
+            /* global $*/
+            /* global _ */
+          $(document).ready(function(){
+              //images being printed
+              let keywords = ["sport car", "abstract art", "puppy", "jeep"];
+              //shuffled
+              keywords = _.shuffle(keywords);
+              //array starting from 0,1,2,3.
+              $("#keyword").val(keywords[0]);
+              //functions to change when clicked ver or hor
+              $("#orientation").on("change", search);
+                //class example
+             // $("#keyword").val("dogs");// example for one image
+             
+              search();
+              $("#searchBtn").on("click", search);
+         
+              function search(){
+                  $.ajax({
+                     
+                     
+                  method: "GET",
+                  url: "https://pixabay.com/api/",
+                  dataType: "json",
+                  data: { "key":"5589438-47a0bca778bf23fc2e8c5bf3e",
+                          "q":$("#keyword").val(),
+                          "orientation":$("#orientation").val()
+                  },
+                 
+                  success: function(result,status) {
+                     result.hits = _.shuffle(result.hits);
+                     $("#images").html(`<figure><img src="https://img.icons8.com/ios/30/000000/filled-like.png">Likes: ${result.hits[0].likes}
+                                        <img src='${result.hits[0].webformatURL}' width='300'></figure>`);
+                     $("#images").append(`<figure><img src="https://img.icons8.com/ios/30/000000/filled-like.png">Likes: ${result.hits[1].likes}
+                                        <img src='${result.hits[1].webformatURL}' width='300'></figure>`);
+                     $("#images").append(`<figure><img src="https://img.icons8.com/ios/30/000000/filled-like.png">Likes: ${result.hits[2].likes}
+                                        <img src='${result.hits[2].webformatURL}' width='300'></figure>`);
+                     $("#images").append(`<figure><img src="https://img.icons8.com/ios/30/000000/filled-like.png">Likes: ${result.hits[3].likes}
+                                        <img src='${result.hits[3].webformatURL}' width='300'></figure>`);
+                  }
+                  // alert(result.hits[0].webformatURL);
+                });//ajax
+              }
+             
+            });//document.ready
+        </script>
+             
+    </body>
+</html>
